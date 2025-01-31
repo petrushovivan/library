@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/people")
@@ -38,5 +35,18 @@ public class PeopleController {
     public String newPerson(Model model){
         model.addAttribute("person", new Person());
         return "people/new";
+    }
+
+    @GetMapping("/{id}")
+    public String show(@PathVariable("id") int id, Model model){
+        Person person = personRepository.show(id);
+        model.addAttribute("person", person);
+        return "people/show";
+    }
+
+    @PostMapping("/{id}")
+    public String edit(@PathVariable("id") int id, @ModelAttribute("person") Person person){
+        personRepository.update(person, id);
+        return "redirect:/people";
     }
 }

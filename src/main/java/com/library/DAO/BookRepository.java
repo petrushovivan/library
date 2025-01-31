@@ -21,4 +21,14 @@ public class BookRepository {
     public List<Book> index(){
         return jdbcTemplate.query("SELECT * FROM BOOKS", new BeanPropertyRowMapper<>(Book.class));
     }
+
+    public Book show(int id){
+        return jdbcTemplate.query("SELECT * FROM BOOKS WHERE ID = ?", new Object[]{id},
+                        new BeanPropertyRowMapper<>(Book.class)).stream().findFirst().orElse(null);
+    }
+
+    public void save(Book book){
+        jdbcTemplate.update("INSERT INTO BOOKS (NAME, AUTHOR, YEAR) VALUES (?, ?, ?)",
+                book.getName(), book.getAuthor(), book.getYear());
+    }
 }
