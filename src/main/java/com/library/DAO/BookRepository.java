@@ -31,4 +31,9 @@ public class BookRepository {
         jdbcTemplate.update("INSERT INTO BOOKS (NAME, AUTHOR, YEAR) VALUES (?, ?, ?)",
                 book.getName(), book.getAuthor(), book.getYear());
     }
+
+    public void update(Book book, int id){
+        jdbcTemplate.update("UPDATE PEOPLE SET NAME = ?, AUTHOR = ?, YEAR = ?, PERSONID = ? WHERE ID = ?",
+                book.getName(), book.getAuthor(), book.getYear(), book.getPersonId(), id);
+    }
 }

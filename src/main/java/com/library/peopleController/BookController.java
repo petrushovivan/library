@@ -36,6 +36,12 @@ public class BookController {
         return "book/show";
     }
 
+    @PostMapping("/{id}")
+    public String update(@ModelAttribute("book") Book book, @PathVariable("id") int id){
+        bookRepository.update(book, id);
+        return "redirect:/book";
+    }
+
     @GetMapping("/new")
     public String newBook(Model model){
         model.addAttribute("book", new Book());
