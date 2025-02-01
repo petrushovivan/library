@@ -6,6 +6,7 @@ public class Book {
     private int year;
     private int id;
     private Integer personId;
+    private String UserName;
 
     public void setPersonId(Integer personId) {
         this.personId = personId;
@@ -45,5 +46,13 @@ public class Book {
 
     public Integer getPersonId() {
         return personId;
+    }
+
+    public void setUserName(String userName) {
+        UserName = userName;
+    }
+
+    public String getUserName() {
+        return UserName;
     }
 }

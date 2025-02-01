@@ -44,7 +44,7 @@ public class PersonRepository {
     }
 
     public Person show(int id){
-        return jdbcTemplate.query("SELECT * FROM PEOPLE WHERE ID = ? ", new Object[]{id},
+        return jdbcTemplate.query("SELECT * FROM PEOPLE WHERE ID = ?", new Object[]{id},
                         new BeanPropertyRowMapper<>(Person.class)).stream().findAny().orElse(null);
     }
 

@@ -14,30 +14,30 @@ public class BookRepository {
     JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public BookRepository(JdbcTemplate jdbcTemplate){
+    public BookRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<Book> index(){
+    public List<Book> index() {
         return jdbcTemplate.query("SELECT * FROM BOOKS", new BeanPropertyRowMapper<>(Book.class));
     }
 
-    public Book show(int id){
-        return jdbcTemplate.query("SELECT * FROM BOOKS WHERE ID = ?", new Object[]{id},
-                        new BeanPropertyRowMapper<>(Book.class)).stream().findFirst().orElse(null);
+    public Book show(int id) {
+        return jdbcTemplate.query("SELECT * FROM BOOKS INNER JOIN PEOPLE ON BOOKS.PERSONID = PEOPLE.ID WHERE BOOKS.ID = ?"
+                , new Object[]{id}, new BeanPropertyRowMapper<>(Book.class)).stream().findFirst().orElse(null);
     }
 
-    public void save(Book book){
+    public void save(Book book) {
         jdbcTemplate.update("INSERT INTO BOOKS (NAME, AUTHOR, YEAR) VALUES (?, ?, ?)",
                 book.getName(), book.getAuthor(), book.getYear());
     }
 
-    public void update(Book book, int id){
-        jdbcTemplate.update("UPDATE PEOPLE SET NAME = ?, AUTHOR = ?, YEAR = ?, PERSONID = ? WHERE ID = ?",
+    public void update(Book book, int id) {
+        jdbcTemplate.update("UPDATE BOOKS SET NAME = ?, AUTHOR = ?, YEAR = ?, PERSONID = ? WHERE ID = ?",
                 book.getName(), book.getAuthor(), book.getYear(), book.getPersonId(), id);
     }
 
-    public void delete(int id){
+    public void delete(int id) {
         jdbcTemplate.update("DELETE FROM BOOKS WHERE ID = ?", id);
     }
 }

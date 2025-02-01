@@ -13,43 +13,43 @@ public class BookController {
     BookRepository bookRepository;
 
     @Autowired
-    public BookController(BookRepository bookRepository){
+    public BookController(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
 
     @GetMapping
-    public String index(Model model){
+    public String index(Model model) {
         model.addAttribute("books", bookRepository.index());
         return "book/index";
     }
 
     @PostMapping
-    public String save(@ModelAttribute("book") Book book){
+    public String save(@ModelAttribute("book") Book book) {
         bookRepository.save(book);
         return "redirect:/book";
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model){
+    public String show(@PathVariable("id") int id, Model model) {
         Book book = bookRepository.show(id);
         model.addAttribute("book", book);
         return "book/show";
     }
 
     @PostMapping("/{id}")
-    public String update(@ModelAttribute("book") Book book, @PathVariable("id") int id){
+    public String update(@ModelAttribute("book") Book book, @PathVariable("id") int id) {
         bookRepository.update(book, id);
         return "redirect:/book";
     }
 
     @GetMapping("/new")
-    public String newBook(Model model){
+    public String newBook(Model model) {
         model.addAttribute("book", new Book());
         return "book/new";
     }
 
     @PostMapping("/{id}/delete")
-    public String delete(@PathVariable("id") int id){
+    public String delete(@PathVariable("id") int id) {
         bookRepository.delete(id);
         return "redirect:/book";
     }
