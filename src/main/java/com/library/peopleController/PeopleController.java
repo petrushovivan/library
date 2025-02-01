@@ -49,4 +49,10 @@ public class PeopleController {
         personRepository.update(person, id);
         return "redirect:/people";
     }
+
+    @PostMapping("/{id}/delete") //@DeleteMapping
+    public String delete(@PathVariable("id") int id){
+        personRepository.delete(id);
+        return "redirect:/people";
+    }
 }

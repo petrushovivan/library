@@ -47,4 +47,10 @@ public class BookController {
         model.addAttribute("book", new Book());
         return "book/new";
     }
+
+    @PostMapping("/{id}/delete")
+    public String delete(@PathVariable("id") int id){
+        bookRepository.delete(id);
+        return "redirect:/book";
+    }
 }

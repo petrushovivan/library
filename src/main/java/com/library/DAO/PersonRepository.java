@@ -47,4 +47,8 @@ public class PersonRepository {
         return jdbcTemplate.query("SELECT * FROM PEOPLE WHERE ID = ? ", new Object[]{id},
                         new BeanPropertyRowMapper<>(Person.class)).stream().findAny().orElse(null);
     }
+
+    public void delete(int id){
+        jdbcTemplate.update("DELETE FROM PEOPLE WHERE ID = ?", id);
+    }
 }

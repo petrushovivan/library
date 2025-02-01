@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8">
     <title>Edit</title>
@@ -13,6 +13,10 @@
     <input type="text" th:field="*{yearOfBirth}" id="yearOfBirth"/>
     <br/>
     <input type="submit" value="Update!"/>
+</form>
+<br/>
+<form th:method="POST" th:action="@{/people/{id}/delete(id=${person.getId()})}">
+    <input type="submit" value="Delete"/>
 </form>
 </body>
 </html>

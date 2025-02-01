@@ -36,4 +36,8 @@ public class BookRepository {
         jdbcTemplate.update("UPDATE PEOPLE SET NAME = ?, AUTHOR = ?, YEAR = ?, PERSONID = ? WHERE ID = ?",
                 book.getName(), book.getAuthor(), book.getYear(), book.getPersonId(), id);
     }
+
+    public void delete(int id){
+        jdbcTemplate.update("DELETE FROM BOOKS WHERE ID = ?", id);
+    }
 }
