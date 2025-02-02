@@ -14,6 +14,7 @@
     <br/>
     <input type="submit" value="Update!"/>
 </form>
+<p th:text="${person.getBookName()}">Book name</p>
 <br/>
 <form th:method="POST" th:action="@{/people/{id}/delete(id=${person.getId()})}">
     <input type="submit" value="Delete"/>

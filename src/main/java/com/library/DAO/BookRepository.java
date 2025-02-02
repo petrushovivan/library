@@ -4,8 +4,11 @@ import com.library.model.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @Repository
@@ -23,8 +26,21 @@ public class BookRepository {
     }
 
     public Book show(int id) {
-        return jdbcTemplate.query("SELECT * FROM BOOKS INNER JOIN PEOPLE ON BOOKS.PERSONID = PEOPLE.ID WHERE BOOKS.ID = ?"
-                , new Object[]{id}, new BeanPropertyRowMapper<>(Book.class)).stream().findFirst().orElse(null);
+        return jdbcTemplate.query("SELECT * FROM BOOKS LEFT JOIN PEOPLE ON BOOKS.PERSONID = PEOPLE.ID WHERE BOOKS.ID = ?",
+                        new Object[]{id}, new RowMapper<Book>() {
+                            @Override
+                            public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
+                                Book book = new Book();
+                                book.setId(rs.getInt("id"));
+                                book.setName(rs.getString("name"));
+                                book.setAuthor(rs.getString("author"));
+                                book.setYear(rs.getInt("year"));
+                                book.setPersonId(rs.getInt("personid"));
+                                book.setUserName(rs.getString("fullname"));
+                                return book;
+                            }
+                        })
+                .stream().findFirst().orElse(null);
     }
 
     public void save(Book book) {

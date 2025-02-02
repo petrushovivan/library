@@ -5,6 +5,15 @@ public class Person {
     private int id;
     private String fullName;
     private int yearOfBirth;
+    private String bookName;
+
+    public void setBookName(String bookName) {
+        this.bookName = bookName;
+    }
+
+    public String getBookName() {
+        return bookName;
+    }
 
     public int getId() {
         return id;

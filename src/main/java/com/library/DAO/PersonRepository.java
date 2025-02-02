@@ -16,21 +16,12 @@ public class PersonRepository {
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public PersonRepository(JdbcTemplate jdbcTemplate){
+    public PersonRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     public List<Person> index() {
-        return jdbcTemplate.query("SELECT * FROM PEOPLE;", new RowMapper<Person>() {
-            @Override
-            public Person mapRow(ResultSet rs, int rowNum) throws SQLException {
-                Person person = new Person();
-                person.setId(rs.getInt("id"));
-                person.setFullName(rs.getString("fullname"));
-                person.setYearOfBirth(rs.getInt("yearofbirth"));
-                return person;
-            }
-        });
+        return jdbcTemplate.query("SELECT * FROM PEOPLE;", new BeanPropertyRowMapper<>(Person.class));
     }
 
     public void save(Person person) {
@@ -43,12 +34,22 @@ public class PersonRepository {
                 person.getFullName(), person.getYearOfBirth(), id);
     }
 
-    public Person show(int id){
-        return jdbcTemplate.query("SELECT * FROM PEOPLE WHERE ID = ?", new Object[]{id},
-                        new BeanPropertyRowMapper<>(Person.class)).stream().findAny().orElse(null);
+    public Person show(int id) {
+        return jdbcTemplate.query("SELECT * FROM PEOPLE LEFT JOIN BOOKS ON PEOPLE.ID = BOOKS.PERSONID WHERE PEOPLE.ID = ?",
+                new Object[]{id}, new RowMapper<Person>() {
+                    @Override
+                    public Person mapRow(ResultSet rs, int rowNum) throws SQLException {
+                        Person person = new Person();
+                        person.setId(rs.getInt("id"));
+                        person.setFullName(rs.getString("fullname"));
+                        person.setYearOfBirth(rs.getInt("yearofbirth"));
+                        person.setBookName("name");
+                        return person;
+                    }
+                }).stream().findFirst().orElse(null);
     }
 
-    public void delete(int id){
+    public void delete(int id) {
         jdbcTemplate.update("DELETE FROM PEOPLE WHERE ID = ?", id);
     }
 }
